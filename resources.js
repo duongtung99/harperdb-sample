@@ -20,3 +20,21 @@ export class Greeting extends Resource {
 		return { greeting: 'Hello, world!' };
 	}
 }
+
+// resources.js:
+const { Dog,Breed } = tables; // get the Dog table from the Harper provided set of tables (in the default database)
+
+export class DogWithHumanAge extends Dog {
+	get(query) {
+		this.humanAge = 15 + this.age * 5; // silly calculation of human age equivalent
+		return super.get(query);
+	}
+}
+
+export class DogWithBreed extends Dog {
+	async get(query) {
+		let breedDescription = await Breed.get(this.breed, this);
+		this.breedDescription = breedDescription;
+		return super.get(query);
+	}
+}
